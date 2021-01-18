@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os, binascii, hashlib, base58, ecdsa
 import random
+import qrcode
 
 def shex(x):
     return binascii.hexlify(x).decode()
@@ -32,5 +33,14 @@ def get_key_w_seed(seed=1337):
     
     return priv_key, WIF, publ_addr
 
-priv_key, WIF, publ_addr = get_key_w_seed(1337)
+priv_key, WIF, publ_addr = get_key_w_seed(42)
 print(publ_addr)
+
+img = qrcode.make(publ_addr)
+img.save("coin.png")
+
+_, _, publ_addr2 = get_key_w_seed(0)
+print("%s -> %s WIF -> %s" % (publ_addr, publ_addr2, WIF))
+
+img = qrcode.make(publ_addr2)
+img.save("coin2.png")
